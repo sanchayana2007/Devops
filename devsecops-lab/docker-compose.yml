@@ -23,7 +23,7 @@ services:
         aliases:
           - gitlab.demo.local
     ports:
-      - "80:80"
+      - "8888:80"
       - "7722:22"
     restart: unless-stopped
     stop_grace_period: 10m

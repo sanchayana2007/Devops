@@ -1,4 +1,4 @@
 import os
 
 username="qwqw"
-password="rtrtrt"
+password="tests"

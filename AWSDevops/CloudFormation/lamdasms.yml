@@ -1,0 +1,44 @@
+ANSTemplateFormatVersion: '2010-09-09' 
+Description: Example Lambda Function CloudFormation Template using SSM 
+Resources: 
+  LambdaRole:
+    Type: AWS::IAM:: Role 
+    Properties:
+      RoleName: simple-ssm-lambda-role 
+      AssumeRolePolicyDocument: 
+        Statement: 
+          - Action:
+            - sts: Assume Role 
+            Effect: Allow 
+            Principal:
+              Service:
+                - lambda.amazonaws.com 
+        Version: 2012-10-17 
+      Policies: 
+        - PolicyDocument:
+          Statement : 
+            - Action:
+              - ssm: getParameter 
+            Effect: Allow
+            Resource: "*" 
+        PolicyName: get-sam-parameter 
+       ManagedPolicyArns:
+         - arn: aws:iam: : aws:policy/AWSLambdaExecute
+    ParameterStoreLambda Function:
+      Type: AWS:: Lambda:: Function 
+      Properties:
+        Runtime: python3.7 
+        Handler: index.handler 
+        Role: 
+          Fn::GetAtt:
+            - Lambdarole
+            - Arn 
+        Code: 
+          ZipFile: |
+            import boto3 
+            ssm = boto3.client('ssm') 
+            def get_site_color(): 
+              site_color = ssm.get_parameter(Name='siteColor',WithDecryption=True ) ['Parameter']['Value']]
+              return site color 
+            def handler (event, context):
+              return { "statusCode" : 200 , "body" : get_site_color()
